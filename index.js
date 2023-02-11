@@ -8,7 +8,7 @@ const cors = require("cors");
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static("./public"));
+
 app.use("/items", itemRoute);
 app.use("/likes", likeRoute);
 app.use("/users", userRoute);
