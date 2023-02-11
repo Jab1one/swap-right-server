@@ -1,15 +1,17 @@
 
 const express = require("express");
 const app = express();
-const warehouseRoute = require("./routes/warehouse");
-const inventoryRoute = require("./routes/inventory");
+const itemRoute = require("./routes/item");
+const likeRoute = require("./routes/like");
+const userRoute = require("./routes/user");
 const cors = require("cors");
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static("./public"));
-app.use("/warehouses", warehouseRoute);
-app.use("/inventories", inventoryRoute);
+app.use("/items", itemRoute);
+app.use("/likes", likeRoute);
+app.use("/users", userRoute);
 
 app.listen(8080, function () {
   console.log("Server online");
