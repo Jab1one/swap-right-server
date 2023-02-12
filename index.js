@@ -1,3 +1,4 @@
+require("dotenv").config(); 
 
 const express = require("express");
 const app = express();
@@ -14,5 +15,5 @@ app.use("/likes", likeRoute);
 app.use("/users", userRoute);
 
 app.listen(8080, function () {
-  console.log("Server online");
+  console.log("Server is online");
 });
