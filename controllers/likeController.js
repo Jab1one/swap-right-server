@@ -1,24 +1,30 @@
-const knex = require("knex")(require("../knexfile"));
-const { v4: uuid } = require("uuid");
 
-const postLike = (req, res) => {
-  const newLK = {
-    ...req.body,
-    id: uuid(),
+
+const knex = require("knex")(require("../knexfile"));
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+
+const secret = process.env.JWT_SECRET;
+
+const postLike = async (req, res) => {
+  const decodedToken = jwt.verify(req.headers.authorization.split(" ")[1], secret);
+  const userId = decodedToken.id;
+
+  const newLike = {
+    item_id: req.body.itemId,
+    user_id: userId,
   };
-  
-  knex("likes")
-    .insert(newLK)
-    .then((data) => {
-      console.log(data);
-      const newUserURL = `/users/${newLK.id}`;
-      res.status(201).location(newUserURL).send(newUserURL);
-    })
-    .catch((err) => {
-      res.status(400).send(`Error creating user: ${err}`);
-    });
+
+  try {
+    const data = await knex("likes").insert(newLike);
+
+    console.log(data);
+    res.status(201).send(`Like created with ID: ${data[0]}`);
+  } catch (err) {
+    res.status(400).send(`Error creating like: ${err}`);
+  }
 };
 
 module.exports = {
-  postLike
+  postLike,
 };
