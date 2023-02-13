@@ -1,5 +1,9 @@
 const knex = require("knex")(require("../knexfile"));
 const { v4: uuid } = require("uuid");
+const jwt = require("jsonwebtoken");
+
+const secret = process.env.JWT_SECRET;
+
 
 const getItem = (req, res) => {
   knex
@@ -14,35 +18,55 @@ const getItem = (req, res) => {
     );
 };
 
-const getAllItem = (_req, res) => {
+const getAllItem = (req, res) => {
+  const decodedToken = jwt.verify(req.headers.authorization.split(" ")[1], secret);
+  const userId = decodedToken.id;
+
   knex
-    .select("*")
+    .select("items.*", "images.image_url as image")
     .from("items")
-    .then((items) => {
+    .leftJoin("item_images as images", "items.item_id", "images.item_id")
+    .where("items.user_id", "!=", userId)
+    .then((rows) => {
+      const items = rows.reduce((acc, row) => {
+        const item = acc.find((i) => i.item_id === row.item_id);
+        if (!item) {
+          acc.push({ ...row, images: [row.image] });
+        } else {
+          item.images.push(row.image);
+        }
+        return acc;
+      }, []);
       res.json(items);
+      
     })
     .catch((err) => {
-      res.status(400).send(err);
+      res.status(400).send({ message: "An error occurred while fetching items." });
     });
 };
 
+
 const postItem = (req, res) => {
-  const newIT = {
-    ...req.body,
-    id: uuid(),
-  };
-  
+  const decodedToken = jwt.verify(req.headers.authorization.split(" ")[1], secret);
+  const userId = decodedToken.id;
+
+  const { title, description } = req.body;
+
   knex("items")
-    .insert(newIT)
-    .then((data) => {
-      console.log(data);
-      const newItemURL = `/items/${newIT.id}`;
-      res.status(201).location(newItemURL).send(newItemURL);
+    .insert({
+      title,
+      description,
+      user_id: userId
+    })
+    .then(() => {
+      res.status(201).send();
     })
     .catch((err) => {
       res.status(400).send(`Error creating item ${err}`);
     });
 };
+
+
 
 const deleteItem = (req,res) => {
 
