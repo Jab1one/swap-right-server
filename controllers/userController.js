@@ -68,14 +68,14 @@ const authenticateUser = async (req, res, next)=> {
   if (!user) {
     return res.status(401).send("Invalid username");
   }
-
+  console.log(user.user_id, user.last_name)
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if(!isPasswordValid) {
     return res.status(401).send("Invalid password");
   }
 
-  const token = jwt.sign({id: user.id, first_name: user.first_name, last_name: user.last_name}, secret);
+  const token = jwt.sign({id: user.user_id, first_name: user.first_name, last_name: user.last_name}, secret);
   req.userId = user.id;
   console.log(token)
 
@@ -83,6 +83,8 @@ const authenticateUser = async (req, res, next)=> {
 
   next();
 }
+
+
 
 
 module.exports = {
