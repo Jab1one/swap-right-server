@@ -1,9 +1,8 @@
-require("dotenv").config(); 
+require("dotenv").config();
 
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-
 
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -14,7 +13,7 @@ const userRoute = require("./routes/user");
 const matchesRoute = require("./routes/matches");
 const cors = require("cors");
 
-app.use(express.static('public'));
+app.use(express.static("public"));
 app.use(cors());
 app.use(express.json());
 
