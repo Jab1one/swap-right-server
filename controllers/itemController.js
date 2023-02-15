@@ -118,6 +118,7 @@ const postItem = [
 ];
 
 const deleteItem = (req, res) => {
+  console.log("hey");
   knex("items")
     .where({ item_id: req.params.id })
     .del()
