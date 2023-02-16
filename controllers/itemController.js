@@ -109,7 +109,7 @@ const postItem = [
             .send({ message: "An error occurred while creating item." });
         });
     } catch (error) {
-      console.log(error);
+      
       res
         .status(400)
         .send({ message: "An error occurred while creating item." });
@@ -118,6 +118,7 @@ const postItem = [
 ];
 
 const deleteItem = (req, res) => {
+  
   knex("items")
     .where({ item_id: req.params.id })
     .del()
