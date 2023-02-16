@@ -70,7 +70,7 @@ const authenticateUser = async (req, res, next) => {
   if (!user) {
     return res.status(401).send("Invalid username");
   }
-  console.log(user.user_id, user.last_name);
+
   const isPasswordValid = await bcrypt.compare(password, user.password);
 
   if (!isPasswordValid) {
@@ -86,7 +86,7 @@ const authenticateUser = async (req, res, next) => {
     secret
   );
   req.userId = user.id;
-  console.log(token);
+  
 
   res.status(200).send({ message: "Login successful", token });
 

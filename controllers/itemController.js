@@ -7,6 +7,8 @@ const multer = require("multer");
 const upload = multer({ dest: "public/images/" });
 const secret = process.env.JWT_SECRET;
 
+
+
 const getAllItem = async (req, res) => {
   try {
     const decodedToken = jwt.verify(
@@ -16,18 +18,13 @@ const getAllItem = async (req, res) => {
     const userId = decodedToken.id;
 
     const rows = await knex
-      .select("items.*", "images.image_url as image")
+      .select("items.*")
       .from("items")
-      .leftJoin("item_images as images", "items.item_id", "images.item_id")
       .where("items.user_id", "!=", userId);
 
     const itemsMap = new Map();
     for (const row of rows) {
-      if (!itemsMap.has(row.item_id)) {
-        itemsMap.set(row.item_id, { ...row, images: [row.image] });
-      } else {
-        itemsMap.get(row.item_id).images.push(row.image);
-      }
+      itemsMap.set(row.item_id, { ...row });
     }
 
     const items = Array.from(itemsMap.values());
@@ -40,6 +37,8 @@ const getAllItem = async (req, res) => {
   }
 };
 
+
+
 const getMyItems = async (req, res) => {
   try {
     const decodedToken = jwt.verify(
@@ -49,18 +48,14 @@ const getMyItems = async (req, res) => {
     const userId = decodedToken.id;
 
     const rows = await knex
-      .select("items.*", "images.image_url as image")
+      .select("*")
       .from("items")
-      .leftJoin("item_images as images", "items.item_id", "images.item_id")
-      .where("items.user_id", "=", userId);
+      .where("user_id", "=", userId);
+      console.log("hey")
 
     const itemsMap = new Map();
     for (const row of rows) {
-      if (!itemsMap.has(row.item_id)) {
-        itemsMap.set(row.item_id, { ...row, images: [row.image] });
-      } else {
-        itemsMap.get(row.item_id).images.push(row.image);
-      }
+      itemsMap.set(row.item_id, { ...row, images: [] });
     }
 
     const items = Array.from(itemsMap.values());
