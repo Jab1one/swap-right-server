@@ -4,7 +4,6 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-    
   },
   "author": "",
   "license": "ISC",
@@ -23,6 +22,7 @@
     "mysql": "^2.18.1",
     "mysql2": "^3.1.2",
     "node": "^19.6.0",
+    "pg": "^8.9.0",
     "sequelize": "^6.28.0",
     "sequelize-auto": "^0.8.8",
     "uuid": "^9.0.0"
