@@ -5,11 +5,13 @@ module.exports = {
     host : process.env.HOSTNAME,
     port : 5432,
     user : process.env.USERNAME,
-    password : process.env.DB_PASSWORD, database : process.env.DATABASE,
+    password : process.env.DB_PASSWORD, 
+    database : process.env.DATABASE,
     ssl: {rejectUnauthorized: false}
   },
   seeds: {
     directory: "./seed_data",
-  },
+  }
+
 };
 
