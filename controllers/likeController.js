@@ -48,10 +48,12 @@ const postLike = async (req, res) => {
       if (!existingMatch) {
         const newMatch = {
           item1_id: req.body.itemId,
-          item2_id: item.item_id,
+          item2_id: 5,
+          // item2_id: item.item_id,
           user1_id: matchingUserId,
           user2_id: matchingOwnerId,
         };
+
 
         await knex("matches").insert(newMatch);
 
