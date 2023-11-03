@@ -1,8 +1,21 @@
 require("dotenv").config();
-
+const knex = require("knex")(require(__dirname + "/knexfile"));
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+
+
+app.get('/check-database-connection', (req, res) => {
+  knex.raw('SELECT 1 as result')
+    .then(() => {
+      res.status(200).json({ message: 'Database is reachable' });
+    })
+    .catch((error) => {
+      res.status(500).json({ error: 'Database is unreachable', details: error.message });
+    });
+});
+
+///
 
 app.use(bodyParser.json({ limit: "50mb" }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
@@ -21,6 +34,9 @@ app.use("/items", itemRoute);
 app.use("/likes", likeRoute);
 app.use("/users", userRoute);
 app.use("/matches", matchesRoute);
+
+
+
 
 app.listen(8080, function () {
   console.log("Server is online");

@@ -1,27 +1,23 @@
+
+
 module.exports = {
-  client: "pg",
-  // client: "mysql",
-  connection: {
-    connectionString: process.env.DATA_URL,
-    host : process.env.HOSTNAME,
-    port : 5432,
-    user : process.env.USERNAME,
-    password : process.env.DB_PASSWORD, 
-    database : process.env.DATABASE,
-    ssl: { rejectUnauthorized: false }
-    // host: "127.0.0.1",
-    // user: "root",
-    // password: "rootroot",
-    // database: "swap_right",
-    // charset: "utf8"
-
-  },
-  migrations: {
-    directory: "./migrations",
-},
-  seeds: {
-    directory: "./seed_data",
-  }
-
-};
-
+    client: 'postgresql',
+    connection: {
+      host: process.env.HOSTNAME,
+      port: 5432,
+      user: process.env.HOSTNAME,
+      password: process.env.HOSTNAME,
+      database: process.env.HOSTNAME,
+      ssl: true,
+    },
+    pool: {
+      min: 2,
+      max: 10,
+    },
+    migrations: {
+      tableName: 'knex_migrations',
+    },
+    // seeds: {
+    //   directory: 'C:/Users/julie/Desktop/Projects/Brainstation Projects/julien-abraham-swapright/swap-right-server/seed_data',
+    // },
+  };
