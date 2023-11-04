@@ -28,7 +28,7 @@ const cors = require("cors");
 
 app.use(express.static("public"));
 app.use(cors({
-  origin: "https://swapright.ca",
+  origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
 }));
